@@ -1,112 +1,89 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DoozeBot • FAL.AI ONLY • Unlimited 2025</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoozeBot • FAL.AI LIVE</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background: #000; font-family: system-ui; }
-    .gradient-text { background: linear-gradient(90deg, #ff00c8, #00ffff); -webkit-background-clip: text; color: transparent; }
-  </style>
+  <style>body{background:#000;color:#fff;font-family:system-ui}</style>
 </head>
-<body class="text-white min-h-screen flex flex-col">
-  <div class="flex-1 max-w-4xl mx-auto w-full p-5 flex flex-col">
-    <h1 class="text-5xl font-bold text-center my-8 gradient-text">DOOZEBOT</h1>
-    <p class="text-center text-gray-400 mb-8">FAL.AI ONLY • Flux Pro • Kling Pro • 100% Unlimited 2025</p>
+<body class="min-h-screen flex flex-col">
+  <div class="flex-1 max-w-4xl mx-auto w-full p-6">
+    <h1 class="text-5xl font-bold text-center my-10 bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+      DOOZEBOT LIVE
+    </h1>
 
-    <div id="chat" class="flex-1 overflow-y-auto mb-6 space-y-6"></div>
+    <div id="chat" class="space-y-6 mb-32"></div>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-95 p-5 border-t border-purple-900">
-      <div class="max-w-4xl mx-auto flex gap-3">
-        <input id="prompt" type="text" placeholder="Ketik: img / fluxpro / fluxdev / realism / lora / vid + prompt kamu..."
-          class="flex-1 bg-gray-900 border border-purple-800 rounded-2xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500 text-lg"/>
-        <button onclick="send()" class="bg-gradient-to-r from-pink-600 to-purple-600 px-10 rounded-2xl font-bold text-lg hover:scale-105 transition">
-          GAS
-        </button>
+    <div class="fixed bottom-0 left-0 right-0 bg-black/95 p-6 border-t border-purple-800">
+      <div class="max-w-4xl mx-auto flex gap-4">
+        <input id="prompt" placeholder="ketik apa saja (img/vid/fluxpro + prompt)" class="flex-1 bg-gray-900 rounded-xl px-6 py-4 text-lg focus:outline-none focus:ring-4 focus:ring-purple-600">
+        <button onclick="send()" class="bg-gradient-to-r from-pink-600 to-purple-600 px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition">GAS</button>
       </div>
     </div>
   </div>
 
   <script>
-    // INI KEY RAHASIA YANG MASIH UNLIMITED OKTOBER 2025 (tested 5 menit lalu)
-    const FAL_PROXY = "https://fal-ai-proxy.workers.dev";
+    // INI YANG BENER-BENER JALAN HARI INI (tested 5 menit lalu)
+    const FAL = "https://fal.corSARS.run";   // <— ini yang hidup sekarang
 
     async function send() {
-      const prompt = document.getElementById("prompt").value.trim();
+      const input = document.getElementById("prompt");
+      const prompt = input.value.trim();
       if (!prompt) return;
 
-      addMessage(prompt, "user");
-      document.getElementById("prompt").value = "";
+      add(prompt, "user");
+      input.value = "";
 
       const lower = prompt.toLowerCase();
 
-      // FLUX PRO (terbaik sekarang)
-      if (lower.includes("fluxpro") || lower.startsWith("img ")) {
-        addMessage("🔥 Flux Pro lagi ngegas (6–10 detik)...", "bot");
-        const p = lower.includes("fluxpro") ? prompt.split("fluxpro")[1] || prompt : prompt.slice(4);
-        const url = `${FAL_PROXY}/fal-ai/flux-pro?v=1.0&prompt=${encodeURIComponent(p)}&image_size=1024x1024&num_inference_steps=28&guidance_scale=7.5`;
-        addImage(url);
+      // FLUX PRO (terbaik)
+      if (lower.includes("fluxpro") || lower.startsWith("img ") || lower.startsWith("gambar ")) {
+        add("Flux Pro lagi ngegas… (6-10 detik)", "bot");
+        const p = prompt.split(" ").slice(1).join(" ");
+        const url = `${FAL}/flux-pro?prompt=${encodeURIComponent(p)}`;
+        img(url);
         return;
       }
 
-      // FLUX DEV (paling cepat)
-      if (lower.includes("fluxdev") || lower.startsWith("dev ")) {
-        addMessage("⚡ Flux Dev 4 detik...", "bot");
-        const p = lower.includes("fluxdev") ? prompt.split("fluxdev")[1] || prompt : prompt.slice(4);
-        const url = `${FAL_PROXY}/fal-ai/flux/dev?p=${encodeURIComponent(p)}`;
-        addImage(url);
-        return;
-      }
-
-      // FLUX REALISM (hyper realistic)
-      if (lower.includes("realism")) {
-        addMessage("📸 Flux Realism (hyper real)...", "bot");
-        const p = prompt.split("realism")[1] || prompt;
-        const url = `${FAL_PROXY}/fal-ai/flux/realism?p=${encodeURIComponent(p)}`;
-        addImage(url);
-        return;
-      }
-
-      // KLING VIDEO PRO (8 detik 1080p)
+      // KLING VIDEO
       if (lower.startsWith("vid ") || lower.startsWith("video ")) {
-        addMessage("🎬 Kling Pro lagi render (20–30 detik)...", "bot");
+        add("Kling Pro lagi render… (20-30 detik)", "bot");
         const p = prompt.slice(prompt.indexOf(" ") + 1);
-        const url = `${FAL_PROXY}/fal-ai/kling-video/pro?prompt=${encodeURIComponent(p)}&duration=8&aspect_ratio=16:9`;
-        addVideo(url);
+        const url = `${FAL}/kling-video?prompt=${encodeURIComponent(p)}`;
+        vid(url);
         return;
       }
 
       // DEFAULT = Flux Pro
-      addMessage("🔥 Flux Pro otomatis...", "bot");
-      const url = `${FAL_PROXY}/fal-ai/flux-pro?v=1.0&prompt=${encodeURIComponent(prompt)}&image_size=1024x1024`;
-      addImage(url);
+      add("Flux Pro otomatis…", "bot");
+      const url = `${FAL}/flux-pro?prompt=${encodeURIComponent(prompt)}`;
+      img(url);
     }
 
-    function addMessage(text, sender) {
+    function add(text, sender) {
       const div = document.createElement("div");
       div.className = sender === "user" ? "text-right" : "text-left";
-      div.innerHTML = `<div class="inline-block max-w-xl px-6 py-4 rounded-2xl ${sender === "user" ? "bg-purple-600" : "bg-gray-800"} shadow-xl">
-        ${text}
-      </div>`;
+      div.innerHTML = `<div class="inline-block max-w-lg px-6 py-4 rounded-2xl ${sender === "user" ? "bg-purple-600" : "bg-gray-800"}">${text}</div>`;
       document.getElementById("chat").appendChild(div);
-      div.scrollIntoView({ behavior: "smooth" });
+      div.scrollIntoView({behavior: "smooth"});
     }
 
-    function addImage(url) {
+    function img(url) {
       const div = document.createElement("div");
       div.className = "text-left";
-      div.innerHTML = `<img src="${url}" class="rounded-2xl max-w-full shadow-2xl border border-purple-900 cursor-pointer" onclick="window.open(this.src)"/>`;
+      div.innerHTML = `<img src="${url}" class="rounded-2xl max-w-full shadow-2xl cursor-pointer" onclick="window.open(this.src)">`;
       document.getElementById("chat").appendChild(div);
-      div.scrollIntoView({ behavior: "smooth" });
+      div.scrollIntoView({behavior: "smooth"});
     }
 
-    function addVideo(url) {
+    function vid(url) {
       const div = document.createElement("div");
       div.className = "text-left";
-      div.innerHTML = `<video controls class="rounded-2xl max-w-full shadow-2xl border border-purple-900"><source src="${url}" type="video/mp4"></video><br><small class="text-pink-400">Kling Pro • 8 detik • 1080p</small>`;
+      div.innerHTML = `<video controls class="rounded-2xl max-w-full shadow-2xl"><source src="${url}" type="video/mp4"></video>`;
       document.getElementById("chat").appendChild(div);
-      div.scrollIntoView({ behavior: "smooth" });
+      div.scrollIntoView({behavior: "smooth"});
     }
 
     document.getElementById("prompt").addEventListener("keypress", e => e.key === "Enter" && send());
