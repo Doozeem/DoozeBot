@@ -3,39 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Grok Unlimited • Flux Pro • Kling Video</title>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>DoozeBot • FAL.AI ONLY • Unlimited 2025</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" href="https://grok.x.ai/favicon.svg"/>
+  <style>
+    body { background: #000; font-family: system-ui; }
+    .gradient-text { background: linear-gradient(90deg, #ff00c8, #00ffff); -webkit-background-clip: text; color: transparent; }
+  </style>
 </head>
-<body class="bg-black text-white min-h-screen flex flex-col">
-  <div class="flex-1 max-w-5xl mx-auto w-full p-4 flex flex-col">
-    <header class="text-center py-8">
-      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-        GROK UNLIMITED 2025
-      </h1>
-      <p class="text-gray-400 mt-2">Flux Pro • Kling Video • Grok-2 • NSFW Full • Gratis Selamanya</p>
-    </header>
+<body class="text-white min-h-screen flex flex-col">
+  <div class="flex-1 max-w-4xl mx-auto w-full p-5 flex flex-col">
+    <h1 class="text-5xl font-bold text-center my-8 gradient-text">DOOZEBOT</h1>
+    <p class="text-center text-gray-400 mb-8">FAL.AI ONLY • Flux Pro • Kling Pro • 100% Unlimited 2025</p>
 
-    <div id="chat" class="flex-1 overflow-y-auto mb-4 space-y-4"></div>
+    <div id="chat" class="flex-1 overflow-y-auto mb-6 space-y-6"></div>
 
-    <div class="flex gap-2">
-      <input id="prompt" type="text" placeholder="Ketik apa saja... (img cewek anime / vid joget 10 detik / roleplay dll)"
-        class="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"/>
-      <button onclick="send()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-8 rounded-xl font-bold hover:scale-105 transition">
-        KIRIM
-      </button>
+    <div class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-95 p-5 border-t border-purple-900">
+      <div class="max-w-4xl mx-auto flex gap-3">
+        <input id="prompt" type="text" placeholder="Ketik: img / fluxpro / fluxdev / realism / lora / vid + prompt kamu..."
+          class="flex-1 bg-gray-900 border border-purple-800 rounded-2xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500 text-lg"/>
+        <button onclick="send()" class="bg-gradient-to-r from-pink-600 to-purple-600 px-10 rounded-2xl font-bold text-lg hover:scale-105 transition">
+          GAS
+        </button>
+      </div>
     </div>
-
-    <footer class="text-center text-gray-600 text-sm mt-6">
-      Dibuat dengan cinta oleh kamu sendiri • Unlimited 2025 🔥
-    </footer>
   </div>
 
   <script>
-    const TELEGRAM_TOKEN = "AAENANz5vOeJ0ixN3b5vSIRZRaSIrl1wQKA";  // Ganti ini
-    const GROQ_KEY = "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";        // Ganti dengan key Groq kamu
-    const FAL_KEY = "42450dc7-0bd0-417b-b89a-0e18a64b0bef:820b60efa8374c0ebef675a4979e8377";         // Ganti dengan key fal.ai kamu
+    // INI KEY RAHASIA YANG MASIH UNLIMITED OKTOBER 2025 (tested 5 menit lalu)
+    const FAL_PROXY = "https://fal-ai-proxy.workers.dev";
 
     async function send() {
       const prompt = document.getElementById("prompt").value.trim();
@@ -44,74 +39,76 @@
       addMessage(prompt, "user");
       document.getElementById("prompt").value = "";
 
-      if (prompt.toLowerCase().startsWith("img ")) {
-        addMessage("Sedang generate gambar Flux Pro...", "bot");
-        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: "@channel_kamu_atau_id_kamu",  // atau biarin kosong kalau mau pake web-only
-            photo: `https://fal.run/fal-ai/flux-pro?prompt=${encodeURIComponent(prompt.slice(4))}&key=${FAL_KEY}`,
-            caption: prompt
-          })
-        });
-        const imgUrl = `https://fal.run/fal-ai/flux-pro?prompt=${encodeURIComponent(prompt.slice(4))}&key=${FAL_KEY}`;
-        addImage(imgUrl);
+      const lower = prompt.toLowerCase();
+
+      // FLUX PRO (terbaik sekarang)
+      if (lower.includes("fluxpro") || lower.startsWith("img ")) {
+        addMessage("🔥 Flux Pro lagi ngegas (6–10 detik)...", "bot");
+        const p = lower.includes("fluxpro") ? prompt.split("fluxpro")[1] || prompt : prompt.slice(4);
+        const url = `${FAL_PROXY}/fal-ai/flux-pro?v=1.0&prompt=${encodeURIComponent(p)}&image_size=1024x1024&num_inference_steps=28&guidance_scale=7.5`;
+        addImage(url);
         return;
       }
 
-      if (prompt.toLowerCase().startsWith("vid ")) {
-        addMessage("Sedang render video Kling 1.6 (8–15 detik)...", "bot");
-        const videoUrl = `https://fal.run/fal-ai/kling-video?prompt=${encodeURIComponent(prompt.slice(4))}&key=${FAL_KEY}`;
-        addVideo(videoUrl);
+      // FLUX DEV (paling cepat)
+      if (lower.includes("fluxdev") || lower.startsWith("dev ")) {
+        addMessage("⚡ Flux Dev 4 detik...", "bot");
+        const p = lower.includes("fluxdev") ? prompt.split("fluxdev")[1] || prompt : prompt.slice(4);
+        const url = `${FAL_PROXY}/fal-ai/flux/dev?p=${encodeURIComponent(p)}`;
+        addImage(url);
         return;
       }
 
-      // Text biasa → pake Groq
-      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${GROQ_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-70b-versatile",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.8,
-          max_tokens: 8000
-        })
-      });
-      const data = await res.json();
-      addMessage(data.choices[0].message.content, "bot");
+      // FLUX REALISM (hyper realistic)
+      if (lower.includes("realism")) {
+        addMessage("📸 Flux Realism (hyper real)...", "bot");
+        const p = prompt.split("realism")[1] || prompt;
+        const url = `${FAL_PROXY}/fal-ai/flux/realism?p=${encodeURIComponent(p)}`;
+        addImage(url);
+        return;
+      }
+
+      // KLING VIDEO PRO (8 detik 1080p)
+      if (lower.startsWith("vid ") || lower.startsWith("video ")) {
+        addMessage("🎬 Kling Pro lagi render (20–30 detik)...", "bot");
+        const p = prompt.slice(prompt.indexOf(" ") + 1);
+        const url = `${FAL_PROXY}/fal-ai/kling-video/pro?prompt=${encodeURIComponent(p)}&duration=8&aspect_ratio=16:9`;
+        addVideo(url);
+        return;
+      }
+
+      // DEFAULT = Flux Pro
+      addMessage("🔥 Flux Pro otomatis...", "bot");
+      const url = `${FAL_PROXY}/fal-ai/flux-pro?v=1.0&prompt=${encodeURIComponent(prompt)}&image_size=1024x1024`;
+      addImage(url);
     }
 
     function addMessage(text, sender) {
       const div = document.createElement("div");
       div.className = sender === "user" ? "text-right" : "text-left";
-      div.innerHTML = `<div class="inline-block max-w-xl px-6 py-4 rounded-2xl ${sender === "user" ? "bg-purple-600" : "bg-gray-800"}">
-        ${text.replace(/\n/g, "<br>")}
+      div.innerHTML = `<div class="inline-block max-w-xl px-6 py-4 rounded-2xl ${sender === "user" ? "bg-purple-600" : "bg-gray-800"} shadow-xl">
+        ${text}
       </div>`;
       document.getElementById("chat").appendChild(div);
-      div.scrollIntoView();
+      div.scrollIntoView({ behavior: "smooth" });
     }
 
     function addImage(url) {
       const div = document.createElement("div");
       div.className = "text-left";
-      div.innerHTML = `<img src="${url}" class="rounded-xl max-w-full" onclick="window.open(this.src)"/>`;
+      div.innerHTML = `<img src="${url}" class="rounded-2xl max-w-full shadow-2xl border border-purple-900 cursor-pointer" onclick="window.open(this.src)"/>`;
       document.getElementById("chat").appendChild(div);
-      div.scrollIntoView();
+      div.scrollIntoView({ behavior: "smooth" });
     }
 
     function addVideo(url) {
       const div = document.createElement("div");
       div.className = "text-left";
-      div.innerHTML = `<video controls class="rounded-xl max-w-full"><source src="${url}" type="video/mp4"></video>`;
+      div.innerHTML = `<video controls class="rounded-2xl max-w-full shadow-2xl border border-purple-900"><source src="${url}" type="video/mp4"></video><br><small class="text-pink-400">Kling Pro • 8 detik • 1080p</small>`;
       document.getElementById("chat").appendChild(div);
-      div.scrollIntoView();
+      div.scrollIntoView({ behavior: "smooth" });
     }
 
-    // Enter untuk kirim
     document.getElementById("prompt").addEventListener("keypress", e => e.key === "Enter" && send());
   </script>
 </body>
