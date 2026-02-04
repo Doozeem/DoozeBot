@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grok Unlimited • Flux Pro • Kling Video</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="https://grok.x.ai/favicon.svg"/>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col">
+  <div class="flex-1 max-w-5xl mx-auto w-full p-4 flex flex-col">
+    <header class="text-center py-8">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+        GROK UNLIMITED 2025
+      </h1>
+      <p class="text-gray-400 mt-2">Flux Pro • Kling Video • Grok-2 • NSFW Full • Gratis Selamanya</p>
+    </header>
+
+    <div id="chat" class="flex-1 overflow-y-auto mb-4 space-y-4"></div>
+
+    <div class="flex gap-2">
+      <input id="prompt" type="text" placeholder="Ketik apa saja... (img cewek anime / vid joget 10 detik / roleplay dll)"
+        class="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"/>
+      <button onclick="send()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-8 rounded-xl font-bold hover:scale-105 transition">
+        KIRIM
+      </button>
+    </div>
+
+    <footer class="text-center text-gray-600 text-sm mt-6">
+      Dibuat dengan cinta oleh kamu sendiri • Unlimited 2025 🔥
+    </footer>
+  </div>
+
+  <script>
+    const TELEGRAM_TOKEN = "AAENANz5vOeJ0ixN3b5vSIRZRaSIrl1wQKA";  // Ganti ini
+    const GROQ_KEY = "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";        // Ganti dengan key Groq kamu
+    const FAL_KEY = "42450dc7-0bd0-417b-b89a-0e18a64b0bef:820b60efa8374c0ebef675a4979e8377";         // Ganti dengan key fal.ai kamu
+
+    async function send() {
+      const prompt = document.getElementById("prompt").value.trim();
+      if (!prompt) return;
+
+      addMessage(prompt, "user");
+      document.getElementById("prompt").value = "";
+
+      if (prompt.toLowerCase().startsWith("img ")) {
+        addMessage("Sedang generate gambar Flux Pro...", "bot");
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: "@channel_kamu_atau_id_kamu",  // atau biarin kosong kalau mau pake web-only
+            photo: `https://fal.run/fal-ai/flux-pro?prompt=${encodeURIComponent(prompt.slice(4))}&key=${FAL_KEY}`,
+            caption: prompt
+          })
+        });
+        const imgUrl = `https://fal.run/fal-ai/flux-pro?prompt=${encodeURIComponent(prompt.slice(4))}&key=${FAL_KEY}`;
+        addImage(imgUrl);
+        return;
+      }
+
+      if (prompt.toLowerCase().startsWith("vid ")) {
+        addMessage("Sedang render video Kling 1.6 (8–15 detik)...", "bot");
+        const videoUrl = `https://fal.run/fal-ai/kling-video?prompt=${encodeURIComponent(prompt.slice(4))}&key=${FAL_KEY}`;
+        addVideo(videoUrl);
+        return;
+      }
+
+      // Text biasa → pake Groq
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "llama-3.1-70b-versatile",
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.8,
+          max_tokens: 8000
+        })
+      });
+      const data = await res.json();
+      addMessage(data.choices[0].message.content, "bot");
+    }
+
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.className = sender === "user" ? "text-right" : "text-left";
+      div.innerHTML = `<div class="inline-block max-w-xl px-6 py-4 rounded-2xl ${sender === "user" ? "bg-purple-600" : "bg-gray-800"}">
+        ${text.replace(/\n/g, "<br>")}
+      </div>`;
+      document.getElementById("chat").appendChild(div);
+      div.scrollIntoView();
+    }
+
+    function addImage(url) {
+      const div = document.createElement("div");
+      div.className = "text-left";
+      div.innerHTML = `<img src="${url}" class="rounded-xl max-w-full" onclick="window.open(this.src)"/>`;
+      document.getElementById("chat").appendChild(div);
+      div.scrollIntoView();
+    }
+
+    function addVideo(url) {
+      const div = document.createElement("div");
+      div.className = "text-left";
+      div.innerHTML = `<video controls class="rounded-xl max-w-full"><source src="${url}" type="video/mp4"></video>`;
+      document.getElementById("chat").appendChild(div);
+      div.scrollIntoView();
+    }
+
+    // Enter untuk kirim
+    document.getElementById("prompt").addEventListener("keypress", e => e.key === "Enter" && send());
+  </script>
+</body>
+</html>
